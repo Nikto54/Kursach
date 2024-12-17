@@ -1,0 +1,48 @@
+{%extends 'base.html'%}
+{%block content%}
+    <form method="get" action="">
+        <input type="text" name="search" placeholder="Введите название..." value="{{ search_query }}">
+        <button type="submit">Найти</button>
+    </form>
+
+    <form method="get" action="">
+        <input type="hidden" name="type" value="posts">
+        <button type="submit">Показать посты</button>
+    </form>
+    <form method="get" action="">
+        <input type="hidden" name="type" value="news">
+        <button type="submit">Показать новости</button>
+    </form>
+    <form method="get" action="">
+        <input type="hidden" name="type" value="all">
+        <button type="submit">Показать все</button>
+    </form>
+    <div>
+        {% for item in content %}
+            <div>
+                <h2>{{ item.title }}</h2>
+                <p>{{ item.created_at }}</p>
+                <p>{{ item.body|truncatechars:150 }}</p>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+    <div>
+        <ul>
+            {% if content.has_previous %}
+                <li><a href="?page={{ content.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if filter_type %}&type={{ filter_type }}{% endif %}">Предыдущая</a></li>
+            {% endif %}
+            {% for num in content.paginator.page_range %}
+                {% if num == content.number %}
+                    <li><strong>{{ num }}</strong></li>
+                {% else %}
+                    <li><a href="?page={{ num }}{% if search_query %}&search={{ search_query }}{% endif %}{% if filter_type %}&type={{ filter_type }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if content.has_next %}
+                <li><a href="?page={{ content.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if filter_type %}&type={{ filter_type }}{% endif %}">Следующая</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{%endblock content%}
