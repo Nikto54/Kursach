@@ -1,8 +1,9 @@
-from django.urls import path
-from .views import MainView,ProductCreateView, ProductDeleteView,main_page
+from .views import NewsViewSet, PostViewSet
 
-urlpatterns = [
-    path('', main_page, name='main_page'),
-    path('product/add/', ProductCreateView.as_view(), name='product_add'),
-    path('product/delete/<int:pk>/', ProductDeleteView.as_view(), name='product_delete'),
-]
+
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'news', NewsViewSet, basename='news')
+router.register(r'posts', PostViewSet, basename='post')
+urlpatterns = router.urls
