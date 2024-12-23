@@ -9,21 +9,25 @@ import {CustomModal} from "../components/CustomModal.jsx";
 export const Profile = () => {
   const [news, setNews] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpenNews, setModalIsOpenNews] = useState(false);
+  const [modalIsOpenPosts, setModalIsOpenPosts] = useState(false);
   const [modalDataNews, setModalDataNews] = useState({});
 
   const openModalNews = (data) => {
-      setModalIsOpen(true);
+      setModalIsOpenNews(true);
       setModalDataNews(data);
   };
 
   const [modalDataPosts, setModalDataPosts] = useState({});
 
   const openModalPosts = (data) => {
-      setModalIsOpen(true);
+      setModalIsOpenPosts(true);
       setModalDataPosts(data);
   };
-  const closeModal = () => {setModalIsOpen(false);};
+  const closeModal = () => {
+      setModalIsOpenPosts(false);
+      setModalIsOpenNews(false);
+  };
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -88,7 +92,7 @@ export const Profile = () => {
                 border: '1px solid #d1d5db'
               }}
               placeholder="Введите заголовок"
-              value={modalDataNews.title || ''}
+              value={modalDataNews.title}
               onChange={(e) => {
                 setModalDataNews(prevState => ({
                   ...prevState,
@@ -110,7 +114,7 @@ export const Profile = () => {
                 minHeight: '100px'
               }}
               placeholder="Введите текст"
-              value={modalDataNews.body || ''}
+              value={modalDataNews.body}
               onChange={(e) => {
                 setModalDataNews(prevState => ({
                   ...prevState,
@@ -261,7 +265,7 @@ export const Profile = () => {
                           Редактировать
                         </button>
                         <CustomModal
-                            isOpen={modalIsOpen}
+                            isOpen={modalIsOpenNews}
                             onClose={closeModal}
                         >
                           {modalContentNews}
@@ -292,7 +296,7 @@ export const Profile = () => {
                           Редактировать
                         </button>
                         <CustomModal
-                            isOpen={modalIsOpen}
+                            isOpen={modalIsOpenPosts}
                             onClose={closeModal}
                         >
                           {modalContentPosts}
